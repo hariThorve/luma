@@ -21,7 +21,7 @@ class LLMService:
         if not self.groq_api_key:
             print("WARNING: GROQ_API_KEY not found in environment variables")
         
-        # Define available models - removed Claude models
+        # Define available models
         self.models = [
             ModelInfo(
                 id="gemini-pro",
@@ -101,42 +101,30 @@ class LLMService:
         Call the Groq API.
         """
         try:
-            if self.groq_api_key:
-                client = groq.Groq(api_key=self.groq_api_key)
-                completion = client.chat.completions.create(
-                    messages=[
-                        {
-                            "role": "user",
-                            "content": prompt
-                        }
-                    ],
-                    model=model_id
-                )
-                return completion.choices[0].message.content
-            else:
-                # If API key is not available, use the HTTP API directly
-                headers = {
-                    "Authorization": f"Bearer {self.groq_api_key}",
-                    "Content-Type": "application/json"
-                }
-                
-                payload = {
-                    "messages": [
-                        {
-                            "role": "user",
-                            "content": prompt
-                        }
-                    ],
-                    "model": model_id
-                }
-                
-                async with aiohttp.ClientSession() as session:
-                    async with session.post(
-                                        "https://api.groq.com/openai/v1/chat/completions", 
-                                        headers=headers, 
-                                        json=payload) as response:
-                        if  response.status != 200:
-                            error_text = await response.text()
+            # Use HTTP API directly instead of the client library to avoid version issues
+            headers = {
+                "Authorization": f"Bearer {self.groq_api_key}",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                "model": model_id
+            }
+            
+            async with aiohttp.ClientSession() as session:
+                async with session.post(
+                    "https://api.groq.com/openai/v1/chat/completions", 
+                    headers=headers, 
+                    json=payload
+                ) as response:
+                    if response.status != 200:
+                        error_text = await response.text()
                         return f"Error from Groq API: {error_text}"
                     
                     data = await response.json()
