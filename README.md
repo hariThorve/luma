@@ -55,8 +55,5 @@ LUMA is an AI-enhanced search platform that combines traditional web search with
    npm run dev
    ```
 
-5. Open your browser and navigate to `http://localhost:5173`
+5. Open your browser and navigate to `[[http://localhost:5173](https://luma-zeta.vercel.app/)](https://luma-zeta.vercel.app/)`
 
-## License
-
-MIT 
