@@ -12,7 +12,7 @@ const api = axios.create({
 export const searchApi = {
   search: async (query, modelIds, numResults = 5) => {
     try {
-      const response = await api.post('/search', {
+      const response = await api.post('/api/search', {
         query,
         ai_model_ids: modelIds,
         num_results: numResults,
