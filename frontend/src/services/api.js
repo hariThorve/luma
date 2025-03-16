@@ -26,7 +26,7 @@ export const searchApi = {
   
   getModels: async () => {
     try {
-      const response = await api.get('/models');
+      const response = await api.get('/api/models');
       return response.data;
     } catch (error) {
       console.error('Get models error:', error);

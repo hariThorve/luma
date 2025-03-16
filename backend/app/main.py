@@ -13,7 +13,7 @@ app = FastAPI(title="LUMA API", description="API for LUMA - Luminous AI Search")
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Frontend URL
+    allow_origins=["https://luma-zeta.vercel.app", "http://localhost:5173"],  # Update with your frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
